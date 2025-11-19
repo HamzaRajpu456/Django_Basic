@@ -19,14 +19,24 @@ def home():
 
 def home_view(request):
     # print(request)
-    return HttpResponse("<h1> Hello From Home! </h1>")
+    # return HttpResponse("<h1> Hello From Home! </h1>")
+
+# render django templates: 
+    return render(HttpResponse, "home.html", {})
+
 
 
 def contact_view(request):
-    return HttpResponse("<h1> Welcome to Contact Page!</h1>")
+    # return HttpResponse("<h1> Welcome to Contact Page!</h1>")
    
+   return render(HttpResponse, "contact.html", {})
+
+
+
 def about_view(reuest):
-    return HttpResponse("<h1> Welcome to About Page!</h1>")   
+    # return HttpResponse("<h1> Welcome to About Page!</h1>")   
+    
+    return render(HttpResponse, "about.html", {})
 
 
 
