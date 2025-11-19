@@ -1,9 +1,11 @@
 from rest_framework import serializers
 from .models import Product, Customer, Order
 
-# serializer : convert Product/Model to JSON
+# serializer : 
+# convert Product/Model to JSON
+# JSON To --> Model
 
-class ProductSerializer(serializers.Serializer):
+class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
@@ -11,14 +13,14 @@ class ProductSerializer(serializers.Serializer):
 
 
 
-class CustomerSerializer(serializers.Serializer):
+class CustomerSerializer(serializers.ModelSerializer):
 
     class Meta : 
         model = Customer
         fields = "__all__"
 
 
-class OrderSerializer(serializers.Serializer):
+class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
