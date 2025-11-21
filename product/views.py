@@ -19,6 +19,7 @@ def home():
 
 def home_view(request):
     # print(request)
+<<<<<<< HEAD
     # return HttpResponse("<h1> Hello From Home! </h1>")
 
 # render django templates: 
@@ -37,6 +38,16 @@ def about_view(reuest):
     # return HttpResponse("<h1> Welcome to About Page!</h1>")   
     
     return render(HttpResponse, "about.html", {})
+=======
+    return HttpResponse("<h1> Hello From Home! </h1>")
+
+
+def contact_view(request):
+    return HttpResponse("<h1> Welcome to Contact Page!</h1>")
+   
+def about_view(reuest):
+    return HttpResponse("<h1> Welcome to About Page!</h1>")   
+>>>>>>> 67269d3f7a430015d963fb4a14d5818d03787384
 
 
 
@@ -49,6 +60,7 @@ def about_view(reuest):
 def HomeView():
     def get(self, request):
         return HttpResponse("This is GET request")
+<<<<<<< HEAD
     
 # CRUD Using Class_Based Viws:
  
@@ -93,3 +105,6 @@ class ProductDetailView(View):
         }
         print(data)
         return JsonResponse(data)
+=======
+    
+>>>>>>> 67269d3f7a430015d963fb4a14d5818d03787384
