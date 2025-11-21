@@ -50,3 +50,46 @@ def HomeView():
     def get(self, request):
         return HttpResponse("This is GET request")
     
+# CRUD Using Class_Based Viws:
+ 
+from django.views import View
+from django.http import JsonResponse
+from .models import Product
+import json
+
+class ProductCreateView(View):
+    def post(self,request):
+        body = json.loads(request.body)
+        product = Product.objects.create(
+        
+            name = body['name'],
+            price = body['price'],
+            description = body['description']
+        ) 
+    
+        return JsonResponse({"message": "product Created Successfully!", "id":product.id})
+     
+
+class ProductListView(View):
+    def get(self, request):
+        products = list(Product.objects.values())
+
+        return JsonResponse({"All Products" : products}) 
+
+
+class ProductDetailView(View):
+    def get(self, request, id):
+
+        product = Product.objects.filter(Product.id == id).first()
+
+        if not product:
+            return JsonResponse({"Error: Product Not Found!"})
+        
+        data = {
+            "id"   : product.id,
+            "name" : product.name,
+            "price": product.price,
+            "description": product.description 
+        }
+        print(data)
+        return JsonResponse(data)
