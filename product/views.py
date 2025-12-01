@@ -9,17 +9,15 @@ from django.http import HttpResponse
 
 
 # Create your views here.
-# FBV = Views written using normal Python functions.
 
+# FBV = Views written using normal Python functions.
 def home():
     return {"meassage": "Welcome to Homepage!"}
 
 
 # Change Default page to Custom Page:
-
 def home_view(request):
     # print(request)
-<<<<<<< HEAD
     # return HttpResponse("<h1> Hello From Home! </h1>")
 
 # render django templates: 
@@ -34,21 +32,10 @@ def contact_view(request):
 
 
 
-def about_view(reuest):
+def about_view(request):
     # return HttpResponse("<h1> Welcome to About Page!</h1>")   
     
     return render(HttpResponse, "about.html", {})
-=======
-    return HttpResponse("<h1> Hello From Home! </h1>")
-
-
-def contact_view(request):
-    return HttpResponse("<h1> Welcome to Contact Page!</h1>")
-   
-def about_view(reuest):
-    return HttpResponse("<h1> Welcome to About Page!</h1>")   
->>>>>>> 67269d3f7a430015d963fb4a14d5818d03787384
-
 
 
 
@@ -60,14 +47,21 @@ def about_view(reuest):
 def HomeView():
     def get(self, request):
         return HttpResponse("This is GET request")
-<<<<<<< HEAD
     
 # CRUD Using Class_Based Viws:
- 
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+
+
 from django.views import View
 from django.http import JsonResponse
 from .models import Product
 import json
+
+# Add CSRF for testing in Postman: cross-sight 
+@method_decorator(csrf_exempt, name="dispatch")
+# Create product :
 
 class ProductCreateView(View):
     def post(self,request):
@@ -78,10 +72,10 @@ class ProductCreateView(View):
             price = body['price'],
             description = body['description']
         ) 
-    
-        return JsonResponse({"message": "product Created Successfully!", "id":product.id})
-     
 
+        return JsonResponse({"message": "product Created Successfully!", "id":product.id})
+
+# Get ALL Products :
 class ProductListView(View):
     def get(self, request):
         products = list(Product.objects.values())
@@ -89,13 +83,14 @@ class ProductListView(View):
         return JsonResponse({"All Products" : products}) 
 
 
+# Get Product By ID :
 class ProductDetailView(View):
     def get(self, request, id):
 
-        product = Product.objects.filter(Product.id == id).first()
+        product = Product.objects.filter(id=id).first()
 
         if not product:
-            return JsonResponse({"Error: Product Not Found!"})
+            return JsonResponse({"Error": "Product Not Found!"})
         
         data = {
             "id"   : product.id,
@@ -103,8 +98,37 @@ class ProductDetailView(View):
             "price": product.price,
             "description": product.description 
         }
-        print(data)
+        # print(data)
         return JsonResponse(data)
-=======
     
->>>>>>> 67269d3f7a430015d963fb4a14d5818d03787384
+
+# Update Product :
+@method_decorator(csrf_exempt, name="dispatch")
+class ProductUpdateView(View):
+    def put(self, request, id):
+
+        product = Product.objects.filter(id=id).first()
+        
+        if not product:
+            return JsonResponse({"Error": "Product Not Found! Enter a valid ID"}, status=404)
+
+        body = json.loads(request.body)
+
+        product.name = body.get('name', product.name)
+        product.price = body.get('price', product.price)
+        product.description = body.get('description', product.description)
+
+        product.save()
+        return JsonResponse({"Message": "Product Updated Successfully!"})
+    
+# Delete Product :
+
+class DeleteProductView(View):
+    def delete(self, request, id):
+        product = Product.objects.filter(id=id).first()
+
+        if not product:
+            return JsonResponse({"Error": "Product Not found! Enter Valid ID"})
+
+        product.delete()
+        return JsonResponse({"Message": "Product Deleted!"})
